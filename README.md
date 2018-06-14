@@ -33,9 +33,9 @@ Using the software should almost be self-explanatory.
 
 * Download the latest archive from [https://github.com/prof79/TheC64Disker/releases](https://github.com/prof79/TheC64Disker/releases).
 
-* Extract the archive into a folder in the root of your USB stick. (subject to change)
+* Extract the archive to the root of your USB stick. The archive contains/will automatically create a folder `TheC64Disker` in your USB stick root.
 
-* After launching the program (`<Folder>\TheC64Disker.exe`) it will show you all disk images found on the USB stick. Click `Activate` to set any image as your `THEC64-drive8.d64` image.
+* After launching the program (`TheC64Disker\TheC64Disker.exe`) it will show you all disk images found on the USB stick. Click `Activate` to set any image as your `THEC64-drive8.d64` image.
 
   * Your original `d64` file will not be changed or altered in any way :-)
 
