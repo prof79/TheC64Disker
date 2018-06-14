@@ -9,17 +9,19 @@ Using the software should almost be self-explanatory.
 
 * Copy your `d64` disk images to the USB stick. The files do not necessarily need to be in the root because THEC64 Disker will perform a full subdirectory search for `d64` files.
 
-* For the time being (no release bundle) create a folder in the root of your USB stick eg. "TheC64Disker". Copy all program files from a Release or Debug build there (`exe`, `config`, `dll`).
+* Download the latest archive from [https://github.com/prof79/TheC64Disker/releases](https://github.com/prof79/TheC64Disker/releases).
 
-* Remove the `ForceRootPath` setting line from the `TheC64Disker.exe.config` file.
+* Extract the archive into a folder in the root of your USB stick. (subject to change)
+
+* After launching the program (`<Folder>\TheC64Disker.exe`) it will show you all disk images found on the USB stick. Click `Activate` to set any image as your `THEC64-drive8.d64` image.
+
+  * Your original `d64` file will not be changed or altered in any way :-)
+
+  * Using hashing technology the program will tell you the currently active image if applicable. The active image will be shown in bold text.
+
+  * If `THEC64-drive8.d64` already exists you will be asked for permission to overwrite it. There is currently no backup function. Copy/rename it manually if there is data from the THEC64 Mini BASIC mode you want to preserve.
 
 * For an improved experience you may consider using an `AutoRun.inf` file or creating an application shortcut in the USB stick root for easy access.
-
-* After launching the program it will show you all disk images found on the USB stick. Click `Activate` to set any image as your `THEC64-drive8.d64` image.
-
-	* Your original `d64` file will not be changed or altered in any way :-)
-
-	* Using hashing technology the program will tell you the currently active image if applicable. The active image will be shown in bold text.
 
 ## System Requirements
 
@@ -42,3 +44,9 @@ I (Markus M. Egger) have pixelled the application icon (Assets\Floppy.ico) in a 
 ## Creator/Maintainer
 
 Markus Michael Egger [https://markusegger.at](https://markusegger.at)
+
+## Build
+
+This project uses [AppVeyor](https://appveyor.com).
+
+[![Build status](https://ci.appveyor.com/api/projects/status/626fgs0ml7bs8j00?svg=true)](https://ci.appveyor.com/project/prof79/thec64disker)
