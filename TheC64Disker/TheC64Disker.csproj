@@ -155,9 +155,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Assets\Floppy.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Floppy.ico" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Web\Microsoft.Web.Publishing.targets" />
   <Target Name="AfterBuild">
