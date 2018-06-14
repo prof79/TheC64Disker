@@ -1,6 +1,28 @@
 # THEC64 Disker
 
+## Contents
+
+* [Description](#description)
+* [History](#history)
+* [Instructions](#instructions)
+* [System Requirements](#systemrequirements)
+* [Disclaimer](#disclaimer)
+    * [Icon](#icon)
+* [Creator/Maintainer](#creatormaintainer)
+* [Build Status](#buildstatus)
+
+
+## Description
+
 A simple ["THEC64 Mini"](https://thec64.com) USB disk swap utility to make setting the C64 BASIC default disk image easier. The Mini requires an image with a hard-coded file name (`THEC64-drive8.d64`) up to at least firmware 1.0.8.
+
+
+## History
+
+### v0.7.0 Pre-Release
+
+Test release. Fully working but not optimal error handling/user interaction. UI may block due to non-asynchronous I/O.
+
 
 ## Instructions
 Using the software should almost be self-explanatory.
@@ -23,29 +45,33 @@ Using the software should almost be self-explanatory.
 
 * For an improved experience you may consider using an `AutoRun.inf` file or creating an application shortcut in the USB stick root for easy access.
 
+
 ## System Requirements
 
 This application is based on Microsoft .NET and WPF technology. Due to the WPF requirement it is a Windows-only GUI tool.
 
 The required .NET Framework version is 4.5.2.
 
-For operating system support and pre-installed version guidance see [.NET Framework system requirements](https://docs.microsoft.com/en-us/dotnet/framework/get-started/system-requirements). It should work from Windows Vista SP2 and Windows 7 SP1 onwards.
+For operating system support and pre-installed version guidance see [.NET Framework system requirements](https://docs.microsoft.com/en-us/dotnet/framework/get-started/system-requirements). It should work from **Windows Vista SP2** and **Windows 7 SP1** onwards.
+
 
 ## Disclaimer
 There is no warranty for the functionality and proper behavior of the software. The author(s) and contributor(s) cannot be held responsible for any damage the software might cause.
 
-This software is licensed under the MIT license (see LICENSE file).
+This software is licensed under the MIT license (see `LICENSE` file).
 
 This software uses the Microsoft Unity Container and [Prism](http://prismlibrary.com) libraries.
 
-## Icon
-I (Markus M. Egger) have pixelled the application icon (Assets\Floppy.ico) in a quick-and-dirty fashion. You may use it for whatever you like except selling it (unlikely, but ...) or claiming you made it.
+### Icon
+I, Markus M. Egger, have pixelled the application icon (`Assets\Floppy.ico`) in a quick-and-dirty fashion. You may use it for whatever you like except selling it (unlikely, but ...) or claiming you made it.
+
 
 ## Creator/Maintainer
 
 Markus Michael Egger [https://markusegger.at](https://markusegger.at)
 
-## Build
+
+## Build Status
 
 This project uses [AppVeyor](https://appveyor.com).
 
