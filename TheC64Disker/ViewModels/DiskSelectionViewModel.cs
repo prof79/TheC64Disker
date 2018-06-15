@@ -100,7 +100,10 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
                     new InteractionRequest<IConfirmation>());
 
         public IEnumerable<DiskImage> DiskImages
-            => TheC64Helper.GetDiskImages().Where(image => !image.IsC64MiniDefaultImage);
+            => TheC64Helper
+                .GetDiskImages()
+                .Where(image => !image.IsC64MiniDefaultImage)
+                .OrderBy(image => image.Name);
 
         public DiskImage SelectedItem
         {
@@ -179,6 +182,10 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
                         break;
 
                     case OperationResult.Error:
+
+                        SelectedItem = null;
+
+                        StatusMessage = LastError;
 
                         const string errorTitle = "Error";
 
