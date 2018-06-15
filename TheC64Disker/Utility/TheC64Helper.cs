@@ -142,18 +142,24 @@ namespace at.markusegger.Application.TheC64Disker.Utility
 
             var overwrite = false;
 
-            if (targetPath.Exists() && overwriteHandler == null)
+            // If the target file already exists we must ask the user for
+            // permission to replace it.
+            if (targetPath.Exists())
             {
-                // Developer most likely forgot to supply an overwrite handler.
-                return OperationResult.Error;
-            }
-            else
-            {
-                overwrite = overwriteHandler();
-
-                if (!overwrite)
+                // Is there a callback to ask the user?
+                if (overwriteHandler == null)
                 {
-                    return OperationResult.Cancelled;
+                    // Developer most likely forgot to supply an overwrite handler.
+                    return OperationResult.Error;
+                }
+                else
+                {
+                    overwrite = overwriteHandler();
+
+                    if (!overwrite)
+                    {
+                        return OperationResult.Cancelled;
+                    }
                 }
             }
 
