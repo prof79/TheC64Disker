@@ -66,13 +66,15 @@
                 Grid.Row="1"
                 Grid.Column="1"
                 Command="{Binding ActivateCommand, Mode=OneWay}"
-                Content="Activa_te" />
+                Content="Activa_te"
+                ToolTip="Set as THEC64 BASIC disk." />
 
             <Button
                 Grid.Row="2"
                 Grid.Column="1"
                 Command="{Binding RefreshCommand, Mode=OneWay}"
-                Content="_Refresh" />
+                Content="_Refresh"
+                ToolTip="Refresh list in case you added/removed some files." />
 
             <Button
                 Grid.Row="3"
