@@ -55,7 +55,7 @@
                 ItemsSource="{Binding DiskImages, Mode=OneWay}"
                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
                 ScrollViewer.VerticalScrollBarVisibility="Visible"
-                SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}"
+                SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                 SelectionMode="Single" />
 
             <Button

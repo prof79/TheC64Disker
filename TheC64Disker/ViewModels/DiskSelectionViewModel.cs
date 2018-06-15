@@ -39,6 +39,7 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
 
         private DiskImage _selectedItem;
         private string _statusMessage;
+        private string _lastError;
 
         #endregion
 
@@ -121,6 +122,13 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
             set => SetProperty(ref _statusMessage, value);
         }
 
+        public string LastError
+        {
+            get => _lastError;
+
+            set => SetProperty(ref _lastError, value);
+        }
+
         #endregion
 
         #region Methods
@@ -145,9 +153,12 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
             }
             else
             {
-                switch (SelectedItem.CopyToDefaultImage(OnOverwriteImage))
+                switch (SelectedItem.CopyToDefaultImage(OnOverwriteImage, ex => LastError = ex.Message))
                 {
                     case OperationResult.Success:
+
+                        // Clear errors
+                        LastError = null;
 
                         // Success requires updating the list.
                         RaisePropertyChanged(nameof(DiskImages));
@@ -172,7 +183,7 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
                         const string errorTitle = "Error";
 
                         var errorMessage =
-                            $"Error copying \"{SelectedItem?.FullName}\" to \"{TheC64Helper.TheC64MiniDiskName}\".";
+                            $"Error copying \"{SelectedItem?.FullName}\" to \"{TheC64Helper.TheC64MiniDiskName}\".{nl}{LastError}";
 
                         var errorNotification = new Error
                         {
@@ -185,7 +196,13 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
                         break;
 
                     case OperationResult.Cancelled:
-                        // No action required on cancellation.
+
+                        SelectedItem = null;
+
+                        LastError = "Copy cancelled.";
+
+                        StatusMessage = LastError;
+
                         break;
                 }
             }
