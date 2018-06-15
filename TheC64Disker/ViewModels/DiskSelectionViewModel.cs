@@ -23,9 +23,6 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
     using Models;
     using Utility;
 
-    /// <summary>
-    /// View-model (data, operations, commands) for the disk selection view.
-    /// </summary>
     public class DiskSelectionViewModel : BindableBase
     {
         #region Fields
@@ -124,13 +121,13 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
             set => SetProperty(ref _statusMessage, value);
         }
 
-#endregion
+        #endregion
 
-#region Methods
+        #region Methods
 
-#endregion
+        #endregion
 
-#region Event Handlers
+        #region Event Handlers
 
         private void OnActivateCommand()
         {
@@ -192,6 +189,24 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
                         break;
                 }
             }
+        }
+
+        private bool OnOverwriteImage()
+        {
+            const string title = "Overwrite File";
+
+            var message =
+                $"The file \"{TheC64Helper.DriveRoot.Combine(TheC64Helper.TheC64MiniDiskName)}\" already exists. Do you want to overwrite it?";
+
+            var confirmation = new Confirmation
+            {
+                Title = title,
+                Content = message
+            };
+
+            CustomConfirmationRequest.Raise(confirmation);
+
+            return confirmation.Confirmed;
         }
 
         private void OnAboutCommand()
@@ -257,24 +272,6 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
             });
         }
 
-        private bool OnOverwriteImage()
-        {
-            const string title = "Overwrite File";
-
-            var message =
-                $"The file \"{TheC64Helper.DriveRoot.Combine(TheC64Helper.TheC64MiniDiskName)}\" already exists. Do you want to overwrite it?";
-
-            var confirmation = new Confirmation
-            {
-                Title = title,
-                Content = message
-            };
-
-            CustomConfirmationRequest.Raise(confirmation);
-
-            return confirmation.Confirmed;
-        }
-
-#endregion
+        #endregion
     }
 }
