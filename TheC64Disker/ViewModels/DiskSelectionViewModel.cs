@@ -7,7 +7,7 @@
 // <description>
 //      View-model for the disk selection view.
 // </description>
-// <version>v0.8.0 2018-06-15T03:07:00+02</version>
+// <version>v0.8.3 2018-06-15T20:39:00+02</version>
 //----------------------------------------------------------------------------
 
 namespace at.markusegger.Application.TheC64Disker.ViewModels
@@ -16,9 +16,9 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
     using System.Collections.Generic;
     using System.Linq;
     using Prism.Commands;
+    using Prism.Events;
     using Prism.Interactivity.InteractionRequest;
     using Prism.Mvvm;
-    using Prism.Regions;
     using at.markusegger.Application.TheC64Disker.Interactivity.InteractionRequest;
     using Models;
     using Utility;
@@ -27,7 +27,7 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
     {
         #region Fields
 
-        private readonly IRegionManager _regionManager;
+        private readonly IEventAggregator _eventAggregator;
 
         private DelegateCommand _activateCommand;
         private DelegateCommand _aboutCommand;
@@ -45,9 +45,13 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
 
         #region Constructors
 
-        public DiskSelectionViewModel(IRegionManager regionManager)
+        public DiskSelectionViewModel(IEventAggregator eventAggregator)
         {
-            _regionManager = regionManager;
+            _eventAggregator = eventAggregator;
+
+            _eventAggregator
+                .GetEvent<Events.DiskImageEnumerationError>()
+                .Subscribe(OnDiskImageError, ThreadOption.UIThread);
         }
 
         #endregion
@@ -100,10 +104,27 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
                     new InteractionRequest<IConfirmation>());
 
         public IEnumerable<DiskImage> DiskImages
-            => TheC64Helper
-                .GetDiskImages()
-                .Where(image => !image.IsC64MiniDefaultImage)
-                .OrderBy(image => image.Name);
+        {
+            get
+            {
+                try
+                {
+                    return
+                        TheC64Helper
+                          .GetDiskImages()
+                          .Where(image => !image.IsC64MiniDefaultImage)
+                          .OrderBy(image => image.Name);
+                }
+                catch (Exception ex)
+                {
+                    _eventAggregator
+                        .GetEvent<Events.DiskImageEnumerationError>()
+                        .Publish(ex);
+
+                    return null;
+                }
+            }
+        }
 
         public DiskImage SelectedItem
         {
@@ -139,6 +160,33 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
         #endregion
 
         #region Event Handlers
+
+        private void OnDiskImageError(Exception ex)
+        {
+            var nl = Environment.NewLine;
+
+            LastError = ex.Message;
+
+            const string title = "Error";
+
+            var message =
+                $"There has been an unrecoverable error while looking for C64 disk images under {TheC64Helper.DriveRoot}.{nl}{nl}"
+                + $"Details: {LastError}{nl}{nl}"
+                + "The program will now exit.";
+
+            var errorNotification = new Error
+            {
+                Title = title,
+                Content = message
+            };
+
+            CustomNotificationRequest.Raise(errorNotification);
+
+            // Close application via eventing.
+            _eventAggregator
+                .GetEvent<Events.CloseEvent>()
+                .Publish(nameof(Interfaces.IShell));
+        }
 
         private void OnActivateCommand()
         {
@@ -294,6 +342,8 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
                 Title = "Error",
                 Content = "Unhandled exception in test error."
             });
+
+            var x = DiskImages?.Count();
         }
 
         #endregion

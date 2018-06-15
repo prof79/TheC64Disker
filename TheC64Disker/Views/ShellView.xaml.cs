@@ -13,13 +13,45 @@
 namespace at.markusegger.Application.TheC64Disker.Views
 {
     using System.Windows;
+    using Prism.Events;
 
     /// <summary>
     /// Interaction logic for ShellView.xaml
     /// </summary>
     public partial class ShellView : Window, Interfaces.IShell
     {
-        public ShellView()
-            => InitializeComponent();
+        #region Fields
+
+        private readonly IEventAggregator _eventAggregator;
+
+        #endregion
+
+        #region Constructors
+
+        public ShellView(IEventAggregator eventAggregator)
+        {
+            InitializeComponent();
+
+            _eventAggregator = eventAggregator;
+
+            _eventAggregator
+                .GetEvent<Events.CloseEvent>()
+                .Subscribe(OnCloseEvent, ThreadOption.UIThread);
+        }
+
+        #endregion
+
+        #region Event Handlers
+
+        private void OnCloseEvent(object arg)
+        {
+            // Simple filter based on class/interface names.
+            if (arg.ToString().Equals(nameof(Interfaces.IShell)))
+            {
+                Close();
+            }
+        }
+
+        #endregion
     }
 }

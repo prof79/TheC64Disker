@@ -40,7 +40,7 @@ namespace at.markusegger.Application.TheC64Disker.Views
 
             _eventAggregator
                 .GetEvent<Events.CloseEvent>()
-                .Subscribe(CloseViaParent);
+                .Subscribe(CloseViaParent, ThreadOption.UIThread);
         }
 
         #endregion
@@ -58,8 +58,16 @@ namespace at.markusegger.Application.TheC64Disker.Views
         private void Link_RequestNavigate(object sender, RequestNavigateEventArgs e)
             => Process.Start(e.Uri.AbsoluteUri);
 
-        private void CloseViaParent()
+        private void CloseViaParent(object arg)
         {
+            // Filter by simply comparing name conventions.
+            // If AboutViewModel requested closing it's ok,
+            // otherwise it isn't.
+            if (!arg.ToString().StartsWith(nameof(AboutView)))
+            {
+                return;
+            }
+
             var parent = Parent;
 
             while (parent is FrameworkElement frameworkElement)

@@ -73,7 +73,9 @@
 
         </Grid>
 
-        <StatusBar Grid.Row="1">
+        <StatusBar
+            Grid.Row="1"
+            MaxHeight="150">
 
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>

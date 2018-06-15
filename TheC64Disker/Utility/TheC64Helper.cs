@@ -7,7 +7,7 @@
 // <description>
 //      Helper class to handle C64 disk images and I/O.
 // </description>
-// <version>v0.1.0 2018-06-13T01:24:00+02</version>
+// <version>v0.5.0 2018-06-15T19:13:00+02</version>
 //----------------------------------------------------------------------------
 
 namespace at.markusegger.Application.TheC64Disker.Utility
@@ -108,7 +108,7 @@ namespace at.markusegger.Application.TheC64Disker.Utility
             }
             else
             {
-                return null;
+                throw new FileNotFoundException("Root path does not exist.", DriveRoot);
             }
         }
 
@@ -126,9 +126,12 @@ namespace at.markusegger.Application.TheC64Disker.Utility
 
             if (!image.Exists)
             {
-                throw new ArgumentException(
-                    $"Disk image with path '{image.FullName}' not found on disk.",
-                    nameof(image));
+                errorHandler?.Invoke(
+                    new ArgumentException(
+                        $"Disk image with path '{image.FullName}' not found on disk.",
+                        nameof(image)));
+
+                return OperationResult.Error;
             }
 
             if (!image.IsValid)

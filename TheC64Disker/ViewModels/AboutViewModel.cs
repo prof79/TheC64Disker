@@ -92,7 +92,7 @@ SOFTWARE.
                         () =>
                             _eventAggregator
                                 .GetEvent<Events.CloseEvent>()
-                                .Publish()));
+                                .Publish(nameof(AboutViewModel))));
 
         #endregion
 
