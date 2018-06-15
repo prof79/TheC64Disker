@@ -3,9 +3,9 @@
 ## Contents
 
 * [Description](#description)
-* [History](#history)
 * [Instructions](#instructions)
 * [System Requirements](#systemrequirements)
+* [History](#history)
 * [Disclaimer](#disclaimer)
     * [Icon](#icon)
 * [Creator/Maintainer](#creatormaintainer)
@@ -15,35 +15,6 @@
 ## Description
 
 A simple ["THEC64 Mini"](https://thec64.com) USB disk swap utility to make setting the C64 BASIC default disk image easier. The Mini requires an image with a hard-coded file name (`THEC64-drive8.d64`) up to at least firmware 1.0.8.
-
-
-## History
-
-### v0.8.0 Pre-Release
-
-Probably already production-ready. A lot of changes/improvements.
-
-* Embracing MVVM: Use of Prism's `InteractionRequest` and `InteractionRequestTrigger` plus custom classes to get rid of `System.Windows.MessageBox` in the view models and mimic its behavior.
-
-* Proper error handling for the activation/overwrite operation.
-
-* Status bar functional/re-worked.
-
-* New about dialog with source links and license information. Accessible via status bar.
-
-* Debug button hidden in release versions.
-
-* Cosmetic changes in disc image list.
-
-**Known issues**
-
-* UI may block due to non-asynchronous I/O.
-
-* Overwrite dialog should better be a `Yes`/`No` than `OK`/`Cancel` dialog. Requires more effort in the custom action/window template classes.
-
-### v0.7.0 Pre-Release
-
-Test release. Fully working but not optimal error handling/user interaction. UI may block due to non-asynchronous I/O.
 
 
 ## Instructions
@@ -75,6 +46,53 @@ This application is based on Microsoft .NET and WPF technology. Due to the WPF r
 The required .NET Framework version is 4.5.2.
 
 For operating system support and pre-installed version guidance see [.NET Framework system requirements](https://docs.microsoft.com/en-us/dotnet/framework/get-started/system-requirements). It should work from **Windows Vista SP2** and **Windows 7 SP1** onwards.
+
+
+## History
+
+### v0.9.0
+
+This should be stable for production.
+
+* Much better error handling also for corner cases like media removal.
+
+* Help screen when no disk images have been found.
+
+* Refresh functionality.
+
+**Known issues**
+
+* Only tested on Windows 10 so far.
+
+* Overwrite dialog should better be a `Yes`/`No` than `OK`/`Cancel` dialog. Requires more effort in the custom action/window template classes.
+
+* UI may *theoretically* block due to non-asynchronous I/O. Never occurred in practice not even while testing with an optical drive. Probably not worth fixing because too complicated without proper async support in the .NET Framework I/O classes.
+
+### v0.8.0 Pre-Release
+
+Probably already production-ready. A lot of changes/improvements.
+
+* Embracing MVVM: Use of Prism's `InteractionRequest` and `InteractionRequestTrigger` plus custom classes to get rid of `System.Windows.MessageBox` in the view models and mimic its behavior.
+
+* Proper error handling for the activation/overwrite operation.
+
+* Status bar functional/re-worked.
+
+* New about dialog with source links and license information. Accessible via status bar.
+
+* Debug button hidden in release versions.
+
+* Cosmetic changes in disc image list.
+
+**Known issues**
+
+* UI may block due to non-asynchronous I/O.
+
+* Overwrite dialog should better be a `Yes`/`No` than `OK`/`Cancel` dialog. Requires more effort in the custom action/window template classes.
+
+### v0.7.0 Pre-Release
+
+Test release. Fully working but not optimal error handling/user interaction. UI may block due to non-asynchronous I/O.
 
 
 ## Disclaimer
