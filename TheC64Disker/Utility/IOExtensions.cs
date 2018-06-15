@@ -22,6 +22,32 @@ namespace at.markusegger.Application.TheC64Disker.Utility
     {
         #region Extension Methods
 
+        public static FileInfo GetFileInfo(this string fileSystemPath)
+            => new FileInfo(fileSystemPath);
+
+        public static DirectoryInfo GetDirectoryInfo(this string fileSystemPath)
+            => new DirectoryInfo(fileSystemPath);
+
+        public static DirectoryInfo GetParentDirectory(this string fileSystemPath)
+        {
+            if (fileSystemPath.IsFile())
+            {
+                var fileInfo = fileSystemPath.GetFileInfo();
+
+                return fileInfo.Directory;
+            }
+            else if (fileSystemPath.IsDirectory())
+            {
+                var directoryInfo = fileSystemPath.GetDirectoryInfo();
+
+                return directoryInfo.Parent;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public static string GetDriveForPath(this string fileSystemPath)
         {
             var info = new FileInfo(fileSystemPath);

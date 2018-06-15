@@ -3,8 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:local="clr-namespace:at.markusegger.Application.TheC64Disker.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:popups="clr-namespace:at.markusegger.Application.TheC64Disker.Views.Popups"
     xmlns:prism="http://prismlibrary.com/"
     d:DesignHeight="450"
     d:DesignWidth="600"
@@ -66,16 +68,78 @@
                 Grid.Row="2"
                 Grid.Column="1"
                 Command="{Binding DebugCommand, Mode=OneWay}"
-                Content="_Debug" />
+                Content="_Debug"
+                Visibility="{Binding DebuggingEnabled, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         </Grid>
 
         <StatusBar Grid.Row="1">
-            <StatusBarItem>
-                <TextBlock Text="Ready." />
+
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+
+            <StatusBarItem
+                Grid.Column="0"
+                ToolTip="{Binding StatusMessage, Mode=OneWay}">
+
+                <TextBlock
+                    Margin="4,2"
+                    Text="{Binding StatusMessage, Mode=OneWay}"
+                    TextTrimming="CharacterEllipsis" />
+
             </StatusBarItem>
+
+            <Separator Grid.Column="1" />
+
+            <StatusBarItem Grid.Column="2">
+
+                <Hyperlink Command="{Binding AboutCommand, Mode=OneWay}">
+                    About ...
+                </Hyperlink>
+
+            </StatusBarItem>
+
         </StatusBar>
 
     </Grid>
+
+    <!--  Interaction Triggers  -->
+    <i:Interaction.Triggers>
+
+        <!--  Trigger for About window  -->
+        <prism:InteractionRequestTrigger SourceObject="{Binding AboutNotificationRequest, Mode=OneWay}">
+            <prism:PopupWindowAction
+                CenterOverAssociatedObject="True"
+                IsModal="True"
+                WindowContentType="{x:Type local:AboutView}"
+                WindowStartupLocation="CenterOwner" />
+        </prism:InteractionRequestTrigger>
+
+        <!--  Trigger for notifications  -->
+        <prism:InteractionRequestTrigger SourceObject="{Binding CustomNotificationRequest, Mode=OneWay}">
+            <popups:MyPopupWindowAction
+                CenterOverAssociatedObject="True"
+                IsModal="True"
+                WindowStartupLocation="CenterOwner" />
+        </prism:InteractionRequestTrigger>
+
+        <!--  Trigger for confirmations  -->
+        <prism:InteractionRequestTrigger SourceObject="{Binding CustomConfirmationRequest, Mode=OneWay}">
+            <popups:MyPopupWindowAction
+                CenterOverAssociatedObject="True"
+                IsModal="True"
+                WindowStartupLocation="CenterOwner" />
+        </prism:InteractionRequestTrigger>
+
+    </i:Interaction.Triggers>
 
 </UserControl>

@@ -112,7 +112,10 @@ namespace at.markusegger.Application.TheC64Disker.Utility
             }
         }
 
-        public static bool CopyToDefaultImage(this DiskImage image, Func<bool> overwriteHandler = null)
+        public static OperationResult CopyToDefaultImage(
+            this DiskImage image,
+            Func<bool> overwriteHandler = null,
+            Action<Exception> errorHandler = null)
         {
             if (image == null)
             {
@@ -141,12 +144,17 @@ namespace at.markusegger.Application.TheC64Disker.Utility
 
             if (targetPath.Exists() && overwriteHandler == null)
             {
-                // TODO: Proper error feedback
-                return false;
+                // Developer most likely forgot to supply an overwrite handler.
+                return OperationResult.Error;
             }
             else
             {
                 overwrite = overwriteHandler();
+
+                if (!overwrite)
+                {
+                    return OperationResult.Cancelled;
+                }
             }
 
             // We're clear
@@ -155,12 +163,13 @@ namespace at.markusegger.Application.TheC64Disker.Utility
             {
                 File.Copy(image.FullName, targetPath, overwrite);
 
-                return true;
+                return OperationResult.Success;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // TODO: We need better error handling.
-                return false;
+                errorHandler?.Invoke(ex);
+
+                return OperationResult.Error;
             }
         }
 

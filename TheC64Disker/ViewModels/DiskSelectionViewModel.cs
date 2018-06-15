@@ -7,7 +7,7 @@
 // <description>
 //      View-model for the disk selection view.
 // </description>
-// <version>v0.8.0 2018-06-13T01:22:00+02</version>
+// <version>v0.8.0 2018-06-15T03:07:00+02</version>
 //----------------------------------------------------------------------------
 
 namespace at.markusegger.Application.TheC64Disker.ViewModels
@@ -15,10 +15,11 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Prism.Commands;
+    using Prism.Interactivity.InteractionRequest;
     using Prism.Mvvm;
+    using Prism.Regions;
+    using at.markusegger.Application.TheC64Disker.Interactivity.InteractionRequest;
     using Models;
     using Utility;
 
@@ -29,25 +30,42 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
     {
         #region Fields
 
+        private readonly IRegionManager _regionManager;
+
         private DelegateCommand _activateCommand;
+        private DelegateCommand _aboutCommand;
         private DelegateCommand _debugCommand;
 
+        private InteractionRequest<INotification> _aboutNotificationRequest;
+        private InteractionRequest<INotification> _customNotificationRequest;
+        private InteractionRequest<IConfirmation> _customConfirmationRequest;
+
         private DiskImage _selectedItem;
+        private string _statusMessage;
 
         #endregion
 
         #region Constructors
 
+        public DiskSelectionViewModel(IRegionManager regionManager)
+        {
+            _regionManager = regionManager;
+        }
+
         #endregion
 
         #region Properties
 
+        public bool DebuggingEnabled
+#if DEBUG
+            => true;
+#else
+            => false;
+#endif
+
         public bool CanActivate
             => SelectedItem != null
                 && SelectedItem?.IsActive == false;
-
-        public bool CanDebug
-            => true;
 
         public DelegateCommand ActivateCommand
             => _activateCommand
@@ -56,12 +74,32 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
                         OnActivateCommand,
                         () => CanActivate));
 
+        public DelegateCommand AboutCommand
+            => _aboutCommand
+                ?? (_aboutCommand =
+                    new DelegateCommand(
+                        OnAboutCommand));
+
         public DelegateCommand DebugCommand
             => _debugCommand
                 ?? (_debugCommand =
                     new DelegateCommand(
-                        OnDebugCommand,
-                        () => CanDebug));
+                        OnDebugCommand));
+
+        public InteractionRequest<INotification> AboutNotificationRequest
+            => _aboutNotificationRequest
+                ?? (_aboutNotificationRequest =
+                    new InteractionRequest<INotification>());
+
+        public InteractionRequest<INotification> CustomNotificationRequest
+            => _customNotificationRequest
+                ?? (_customNotificationRequest =
+                    new InteractionRequest<INotification>());
+
+        public InteractionRequest<IConfirmation> CustomConfirmationRequest
+            => _customConfirmationRequest
+                ?? (_customConfirmationRequest =
+                    new InteractionRequest<IConfirmation>());
 
         public IEnumerable<DiskImage> DiskImages
             => TheC64Helper.GetDiskImages().Where(image => !image.IsC64MiniDefaultImage);
@@ -70,16 +108,29 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
         {
             get => _selectedItem;
 
-            set => SetProperty(ref _selectedItem, value, () => ActivateCommand.RaiseCanExecuteChanged());
+            set => SetProperty(ref _selectedItem, value,
+                    () =>
+                    {
+                        ActivateCommand.RaiseCanExecuteChanged();
+
+                        StatusMessage = SelectedItem?.FullName;
+                    });
         }
 
-        #endregion
+        public string StatusMessage
+        {
+            get => _statusMessage;
 
-        #region Methods
+            set => SetProperty(ref _statusMessage, value);
+        }
 
-        #endregion
+#endregion
 
-        #region Event Handlers
+#region Methods
+
+#endregion
+
+#region Event Handlers
 
         private void OnActivateCommand()
         {
@@ -87,34 +138,72 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
 
             if (SelectedItem == null)
             {
-                System.Windows.MessageBox.Show(
-                    "You must select an item first.",
-                    "No Selection",
-                    System.Windows.MessageBoxButton.OK,
-                    System.Windows.MessageBoxImage.Warning);
+                var warning = new Warning
+                {
+                    Title = "No Selection",
+                    Content = "You must select an item first."
+                };
+
+                CustomNotificationRequest.Raise(warning);
             }
             else
             {
-                if (SelectedItem?.CopyToDefaultImage(OnOverwriteImage) == true)
+                switch (SelectedItem.CopyToDefaultImage(OnOverwriteImage))
                 {
-                    // Success requires updateing the list.
-                    RaisePropertyChanged(nameof(DiskImages));
+                    case OperationResult.Success:
 
-                    System.Windows.MessageBox.Show(
-                        $"Image successfully copied to \"{TheC64Helper.TheC64MiniDiskName}\".",
-                        "Success",
-                        System.Windows.MessageBoxButton.OK,
-                        System.Windows.MessageBoxImage.Information);
-                }
-                else
-                {
-                    System.Windows.MessageBox.Show(
-                        $"Error copying \"{SelectedItem?.FullName}\" to \"{TheC64Helper.TheC64MiniDiskName}\".",
-                        "Error",
-                        System.Windows.MessageBoxButton.OK,
-                        System.Windows.MessageBoxImage.Error);
+                        // Success requires updating the list.
+                        RaisePropertyChanged(nameof(DiskImages));
+
+                        const string successTitle = "Success";
+
+                        var successMessage =
+                            $"Image successfully copied to \"{TheC64Helper.TheC64MiniDiskName}\".";
+
+                        var successNotification = new Notification
+                        {
+                            Title = successTitle,
+                            Content = successMessage
+                        };
+
+                        CustomNotificationRequest.Raise(successNotification);
+
+                        break;
+
+                    case OperationResult.Error:
+
+                        const string errorTitle = "Error";
+
+                        var errorMessage =
+                            $"Error copying \"{SelectedItem?.FullName}\" to \"{TheC64Helper.TheC64MiniDiskName}\".";
+
+                        var errorNotification = new Error
+                        {
+                            Title = errorTitle,
+                            Content = errorMessage
+                        };
+
+                        CustomNotificationRequest.Raise(errorNotification);
+
+                        break;
+
+                    case OperationResult.Cancelled:
+                        // No action required on cancellation.
+                        break;
                 }
             }
+        }
+
+        private void OnAboutCommand()
+        {
+            AboutNotificationRequest.Raise(
+                new Notification
+                {
+                    Title = "About TheC64Disker"
+                    // Content will be filled by the interaction trigger
+                    // and content type
+                }
+            );
         }
 
         private void OnDebugCommand()
@@ -126,37 +215,66 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
             var message =
                 $"Root path: {rootPath}{nl}Exists? {rootPath.Exists()}{nl}Is Directory? {rootPath.IsDirectory()}{nl}Is File? {rootPath.IsFile()}";
 
-            System.Windows.MessageBox.Show(
-                message,
-                "Root Path Info",
-                System.Windows.MessageBoxButton.OK,
-                System.Windows.MessageBoxImage.Information);
+            var notification = new Notification
+            {
+                Title = "Root Path Info",
+                Content = message
+            };
+
+            CustomNotificationRequest.Raise(notification);
 
             if (SelectedItem != null)
             {
-                System.Windows.MessageBox.Show(
-                    $"You selected: {SelectedItem.FullName}",
-                    "Selection",
-                    System.Windows.MessageBoxButton.OK,
-                    System.Windows.MessageBoxImage.Information);
+                CustomNotificationRequest.Raise(new Notification
+                {
+                    Title = "Selection",
+                    Content = $"You selected: {SelectedItem.FullName}"
+                });
             }
+
+            // Test notifications
+
+            var warning = new Warning
+            {
+                Title = "No Selection",
+                Content = "You must select an item first."
+            };
+
+            CustomNotificationRequest.Raise(warning);
+
+            var confirmation = new Confirmation
+            {
+                Title = "Test confirmation",
+                Content = "Do you confirm?"
+            };
+
+            CustomConfirmationRequest.Raise(confirmation);
+
+            CustomNotificationRequest.Raise(new Error
+            {
+                Title = "Error",
+                Content = "Unhandled exception in test error."
+            });
         }
 
         private bool OnOverwriteImage()
         {
+            const string title = "Overwrite File";
+
             var message =
                 $"The file \"{TheC64Helper.DriveRoot.Combine(TheC64Helper.TheC64MiniDiskName)}\" already exists. Do you want to overwrite it?";
 
-            var result =
-                System.Windows.MessageBox.Show(
-                    message,
-                    "Overwrite File",
-                    System.Windows.MessageBoxButton.YesNo,
-                    System.Windows.MessageBoxImage.Question);
+            var confirmation = new Confirmation
+            {
+                Title = title,
+                Content = message
+            };
 
-            return result == System.Windows.MessageBoxResult.Yes;
+            CustomConfirmationRequest.Raise(confirmation);
+
+            return confirmation.Confirmed;
         }
 
-        #endregion
+#endregion
     }
 }

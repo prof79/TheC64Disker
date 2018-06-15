@@ -10,6 +10,8 @@
 
         <cvt:BooleanToFontWeightConverter x:Key="BooleanToFontWeightConverter" />
 
+        <cvt:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
         <!--  Styling for the application  -->
 
         <Style TargetType="TextBlock">
@@ -30,6 +32,11 @@
             <Setter Property="Margin" Value="4" />
         </Style>
 
+        <Style TargetType="Image">
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="Stretch" Value="UniformToFill" />
+        </Style>
+
         <Style TargetType="StatusBar">
             <Setter Property="Margin" Value="0,4,0,0" />
         </Style>
@@ -38,9 +45,25 @@
 
         <DataTemplate x:Key="DiskImageTemplate">
 
-            <TextBlock
-                FontWeight="{Binding IsActive, Mode=OneWay, Converter={StaticResource BooleanToFontWeightConverter}}"
-                Text="{Binding Name, Mode=OneWay}" />
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Image
+                    Grid.Column="0"
+                    Width="16"
+                    Height="16"
+                    Source="/Assets/Floppy.ico" />
+
+                <TextBlock
+                    Grid.Column="1"
+                    FontWeight="{Binding IsActive, Mode=OneWay, Converter={StaticResource BooleanToFontWeightConverter}}"
+                    Text="{Binding Name, Mode=OneWay}" />
+
+            </Grid>
 
         </DataTemplate>
 

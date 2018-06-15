@@ -19,6 +19,28 @@ A simple ["THEC64 Mini"](https://thec64.com) USB disk swap utility to make setti
 
 ## History
 
+### v0.8.0 Pre-Release
+
+Probably already production-ready. A lot of changes/improvements.
+
+* Embracing MVVM: Use of Prism's `InteractionRequest` and `InteractionRequestTrigger` plus custom classes to get rid of `System.Windows.MessageBox` in the view models and mimic its behavior.
+
+* Proper error handling for the activation/overwrite operation.
+
+* Status bar functional/re-worked.
+
+* New about dialog with source links and license information. Accessible via status bar.
+
+* Debug button hidden in release versions.
+
+* Cosmetic changes in disc image list.
+
+**Known issues**
+
+* UI may block due to non-asynchronous I/O.
+
+* Overwrite dialog should better be a `Yes`/`No` than `OK`/`Cancel` dialog. Requires more effort in the custom action/window template classes.
+
 ### v0.7.0 Pre-Release
 
 Test release. Fully working but not optimal error handling/user interaction. UI may block due to non-asynchronous I/O.
