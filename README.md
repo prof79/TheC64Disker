@@ -16,6 +16,8 @@
 
 A simple ["THEC64 Mini"](https://thec64.com) USB disk swap utility to make setting the C64 BASIC default disk image easier. The Mini requires an image with a hard-coded file name (`THEC64-drive8.d64`) up to at least firmware 1.0.8.
 
+![Screenshot](https://github.com/prof79/TheC64Disker/raw/master/TheC64Disker/Assets/TheC64Disker_Screenshot_001.png)
+
 
 ## Instructions
 Using the software should almost be self-explanatory.
