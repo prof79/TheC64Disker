@@ -16,7 +16,9 @@
     <Grid>
 
         <Grid.RowDefinitions>
+            <!--  UI Controls  -->
             <RowDefinition Height="*" />
+            <!--  Status Bar  -->
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -32,7 +34,9 @@
             <Grid.RowDefinitions>
                 <!--  Caption  -->
                 <RowDefinition Height="Auto" />
-                <!--  Select Button  -->
+                <!--  Activate Button  -->
+                <RowDefinition Height="Auto" />
+                <!--  Refresh Button  -->
                 <RowDefinition Height="Auto" />
                 <!--  Debug Button  -->
                 <RowDefinition Height="Auto" />
@@ -49,7 +53,7 @@
 
             <ListView
                 Grid.Row="1"
-                Grid.RowSpan="3"
+                Grid.RowSpan="4"
                 Grid.Column="0"
                 ItemTemplate="{StaticResource DiskImageTemplate}"
                 ItemsSource="{Binding DiskImages, Mode=OneWay}"
@@ -67,9 +71,56 @@
             <Button
                 Grid.Row="2"
                 Grid.Column="1"
+                Command="{Binding RefreshCommand, Mode=OneWay}"
+                Content="_Refresh" />
+
+            <Button
+                Grid.Row="3"
+                Grid.Column="1"
                 Command="{Binding DebugCommand, Mode=OneWay}"
                 Content="_Debug"
                 Visibility="{Binding DebuggingEnabled, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+            <!--  Help Screen  -->
+            <Grid
+                Grid.RowSpan="5"
+                Grid.ColumnSpan="2"
+                Background="White"
+                Opacity="0.9"
+                Visibility="{Binding ShowHelp, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <FlowDocumentScrollViewer
+                    Width="360"
+                    Height="200"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+                    <FlowDocument
+                        FontFamily="Verdana"
+                        FontSize="16"
+                        FontWeight="Bold">
+
+                        <Paragraph>
+                            No C64 disk images could be found.
+                        </Paragraph>
+                        <Paragraph>
+                            Please copy some .d64 files into the root or any sub-folder
+                            of the USB stick.
+                        </Paragraph>
+                        <Paragraph>
+                            <Run Text="Click " /><Hyperlink Command="{Binding RefreshCommand, Mode=OneWay}">refresh</Hyperlink>
+                            when you are ready.</Paragraph>
+
+                    </FlowDocument>
+
+                </FlowDocumentScrollViewer>
+
+            </Grid>
 
         </Grid>
 

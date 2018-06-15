@@ -7,7 +7,7 @@
 // <description>
 //      View-model for the disk selection view.
 // </description>
-// <version>v0.8.3 2018-06-15T20:39:00+02</version>
+// <version>v0.9.0 2018-06-15T22:16:00+02</version>
 //----------------------------------------------------------------------------
 
 namespace at.markusegger.Application.TheC64Disker.ViewModels
@@ -30,6 +30,7 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
         private readonly IEventAggregator _eventAggregator;
 
         private DelegateCommand _activateCommand;
+        private DelegateCommand _refreshCommand;
         private DelegateCommand _aboutCommand;
         private DelegateCommand _debugCommand;
 
@@ -37,6 +38,7 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
         private InteractionRequest<INotification> _customNotificationRequest;
         private InteractionRequest<IConfirmation> _customConfirmationRequest;
 
+        private IEnumerable<DiskImage> _diskImages;
         private DiskImage _selectedItem;
         private string _statusMessage;
         private string _lastError;
@@ -65,6 +67,10 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
             => false;
 #endif
 
+        public bool ShowHelp
+            => DiskImages == null
+                || DiskImages?.Count() == 0;
+
         public bool CanActivate
             => SelectedItem != null
                 && SelectedItem?.IsActive == false;
@@ -75,6 +81,12 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
                     new DelegateCommand(
                         OnActivateCommand,
                         () => CanActivate));
+
+        public DelegateCommand RefreshCommand
+            => _refreshCommand
+                ?? (_refreshCommand =
+                    new DelegateCommand(
+                        RefreshImages));
 
         public DelegateCommand AboutCommand
             => _aboutCommand
@@ -107,22 +119,27 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
         {
             get
             {
-                try
+                if (_diskImages == null)
                 {
-                    return
-                        TheC64Helper
-                          .GetDiskImages()
-                          .Where(image => !image.IsC64MiniDefaultImage)
-                          .OrderBy(image => image.Name);
-                }
-                catch (Exception ex)
-                {
-                    _eventAggregator
-                        .GetEvent<Events.DiskImageEnumerationError>()
-                        .Publish(ex);
+                    try
+                    {
+                        _diskImages =
+                            TheC64Helper
+                              .GetDiskImages()
+                              .Where(image => !image.IsC64MiniDefaultImage)
+                              .OrderBy(image => image.Name);
 
-                    return null;
+                        RaisePropertyChanged(nameof(ShowHelp));
+                    }
+                    catch (Exception ex)
+                    {
+                        _eventAggregator
+                            .GetEvent<Events.DiskImageEnumerationError>()
+                            .Publish(ex);
+                    }
                 }
+
+                return _diskImages;
             }
         }
 
@@ -188,6 +205,18 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
                 .Publish(nameof(Interfaces.IShell));
         }
 
+        private void RefreshImages()
+        {
+            // Setting the backing field to null will force the
+            // property to re-initialize on next access.
+            _diskImages = null;
+
+            // Now notify the consumers to update their bindings.
+            // This will cause a property access and thus a new
+            // load operation.
+            RaisePropertyChanged(nameof(DiskImages));
+        }
+
         private void OnActivateCommand()
         {
             var nl = Environment.NewLine;
@@ -212,7 +241,7 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
                         LastError = null;
 
                         // Success requires updating the list.
-                        RaisePropertyChanged(nameof(DiskImages));
+                        RefreshImages();
 
                         const string successTitle = "Success";
 
@@ -343,7 +372,7 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
                 Content = "Unhandled exception in test error."
             });
 
-            var x = DiskImages?.Count();
+            var provokeErrorOnRemoval = DiskImages?.Count();
         }
 
         #endregion
