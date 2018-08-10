@@ -13,25 +13,11 @@
 namespace at.markusegger.Application.TheC64Disker
 {
     using System.Windows;
-    using Bootstrappers;
 
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
     {
-        #region Overridden Methods
-
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
-
-            var bootstrapper =
-                new TheC64DiskerBootstrapper();
-
-            bootstrapper.Run();
-        }
-
-        #endregion
     }
 }

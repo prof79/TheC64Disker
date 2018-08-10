@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<prism:PrismApplication xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.DryIoc;assembly=Prism.DryIoc.Forms"
+             xmlns:cvt="clr-namespace:at.markusegger.Application.TheC64Disker.Converters"
+             x:Class="at.markusegger.Application.TheC64Disker.Forms.App">
+    
+	<Application.Resources>
+
+		<!-- Application resource dictionary -->
+
+        <!--  Converters  -->
+
+        <cvt:BooleanToFontAttributesConverter x:Key="BooleanToFontAttributesConverter" />
+
+        <!--  Styling for the application  -->
+
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="4" />
+        </Style>
+
+        <Style TargetType="Entry">
+            <Setter Property="Margin" Value="4" />
+            <!-- TODO -->
+            <!--<Setter Property="Padding" Value="4,2" />-->
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="4" />
+            <!-- TODO -->
+            <!--<Setter Property="Padding" Value="4,2" />-->
+            <Setter Property="WidthRequest" Value="100" />
+            <Setter Property="HeightRequest" Value="40" />
+        </Style>
+
+        <Style x:Key="LinkButton" TargetType="Button" BasedOn="{x:Null}">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="Blue" />
+            <Setter Property="BorderColor" Value="Transparent" />
+        </Style>
+        
+        <Style TargetType="ListView">
+            <Setter Property="Margin" Value="4" />
+        </Style>
+
+        <Style TargetType="Image">
+            <Setter Property="Margin" Value="4" />
+            <!-- TODO -->
+            <!--<Setter Property="Stretch" Value="UniformToFill" />-->
+        </Style>
+
+        <!--<Style TargetType="StatusBar">
+            <Setter Property="Margin" Value="0,4,0,0" />
+        </Style>-->
+
+    </Application.Resources>
+    
+</prism:PrismApplication>

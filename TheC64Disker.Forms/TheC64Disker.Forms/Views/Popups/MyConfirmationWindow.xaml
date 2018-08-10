@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="at.markusegger.Application.TheC64Disker.Views.Popups.MyConfirmationWindow"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="{Binding Title, Mode=OneWay}"
+    >
+
+    <ContentPage.Style>
+        <Style TargetType="{x:Type Window}">
+            <Setter Property="SizeToContent" Value="WidthAndHeight" />
+            <Setter Property="ResizeMode" Value="CanMinimize" />
+        </Style>
+    </ContentPage.Style>
+
+    <Grid
+        x:Name="LayoutRoot"
+        Margin="4">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- TODO
+            From WPF:
+            VerticalAlignment="Top"
+        -->
+        <Image
+            x:Name="ConfirmationIcon"
+            Grid.Row="0"
+            Grid.Column="0"
+            Width="32"
+            Height="32"
+            Margin="4,4,8,8"
+            Source="{Binding ConfirmationIcon, Mode=OneWay}" />
+
+        <!--<ContentControl
+            Grid.Row="0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Content="{Binding Content}" />-->
+
+        <!-- TODO
+            From WPF:
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            TextWrapping="Wrap"
+        -->
+        <Label
+            Grid.Row="0"
+            Grid.Column="1"
+            Margin="4"
+            Text="{Binding Content, Mode=OneWay}"
+             />
+
+        <!-- TODO
+            From WPF:
+            HorizontalAlignment="Right"
+        -->
+        <StackLayout
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Orientation="Horizontal">
+
+            <!-- TODO
+                From WPF:
+                MinWidth="75"
+                MinHeight="25"
+                MaxWidth="100"
+                MaxHeight="50"
+                HorizontalAlignment="Right"
+                Click="OkButton_Click"
+            -->
+            <Button
+                x:Name="OkButton"
+                Margin="4,12,4,4"
+                Text="OK" />
+
+            <!-- TOOD
+                From WPF:
+                MinWidth="75"
+                MinHeight="25"
+                MaxWidth="100"
+                MaxHeight="50"
+                HorizontalAlignment="Right"
+                Click="CancelButton_Click"
+                IsDefault="True"
+            -->
+            <Button
+                x:Name="CancelButton"
+                Margin="8,12,4,4"
+                Text="Cancel"
+                />
+
+        </StackLayout>
+
+    </Grid>
+
+</ContentPage>
