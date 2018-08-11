@@ -163,10 +163,12 @@
                 />
 
             <!--  Help Screen  -->
+            
             <!-- TODO
                 From WPF:
                 (done) Background="White"
                 (done) Visibility="{Binding ShowHelp, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Was embedded in a FlowDocumentScrollViewer with Verdana/16/Bold.
             -->
             <Grid
                 Grid.RowSpan="5"
@@ -176,7 +178,6 @@
                 Opacity="0.8"
                 >
 
-                <!-- "Page" - Paragraphs go vertically -->
                 <FlexLayout
                     Margin="16"
                     StyleId="helpViewer"
@@ -198,36 +199,6 @@
                     </StackLayout>
 
                 </FlexLayout>
-
-                <!-- TODO
-                    From WPF: Not supported in Forms?
-                -->
-                <!--<FlowDocumentScrollViewer
-                    Width="360"
-                    Height="200"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto">
-
-                    <FlowDocument
-                        FontFamily="Verdana"
-                        FontSize="16"
-                        FontWeight="Bold">
-
-                        <Paragraph>
-                            No C64 disk images could be found.
-                        </Paragraph>
-                        <Paragraph>
-                            Please copy some .d64 files into the root or any sub-folder
-                            of the USB stick.
-                        </Paragraph>
-                        <Paragraph>
-                            <Run Text="Click " /><Hyperlink Command="{Binding RefreshCommand, Mode=OneWay}">refresh</Hyperlink>
-                            when you are ready.</Paragraph>
-
-                    </FlowDocument>
-
-                </FlowDocumentScrollViewer>-->
 
             </Grid>
 
