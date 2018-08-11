@@ -7,7 +7,7 @@
 // <description>
 //      Helper class to handle C64 disk images and I/O.
 // </description>
-// <version>v0.5.0 2018-06-15T19:13:00+02</version>
+// <version>v0.9.1 2018-08-11T21:32:00+02</version>
 //----------------------------------------------------------------------------
 
 namespace at.markusegger.Application.TheC64Disker.Utility
@@ -18,8 +18,6 @@ namespace at.markusegger.Application.TheC64Disker.Utility
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using System.Text;
-    using System.Threading.Tasks;
     using Models;
 
     /// <summary>
@@ -40,6 +38,19 @@ namespace at.markusegger.Application.TheC64Disker.Utility
         /// </summary>
         public static string ImageExtension
             => ".d64";
+
+        /// <summary>
+        /// Gets the extension of CBM 8250 disk images.
+        /// Please note that <see cref="FileInfo"/> includes
+        /// the dot (".") in the extension eg. ".txt".
+        /// </summary>
+        /// <remarks>
+        /// Added by request due to some compilation disk
+        /// images around using this format and being
+        /// compatible to the THEC64 Mini.
+        /// </remarks>
+        public static string ImageExtensionCbm8250
+            => ".d82";
 
         /// <summary>
         /// Gets the hard-coded default disk image name used
@@ -85,6 +96,13 @@ namespace at.markusegger.Application.TheC64Disker.Utility
                             DriveRoot,
                             $"*{ImageExtension}",
                             SearchOption.AllDirectories)
+                        .Union(
+                            Directory
+                                .EnumerateFiles(
+                                DriveRoot,
+                                $"*{ImageExtensionCbm8250}",
+                                SearchOption.AllDirectories)
+                        )
                         .Select(path => new DiskImage { FullName = path })
                         .ToList();
 
