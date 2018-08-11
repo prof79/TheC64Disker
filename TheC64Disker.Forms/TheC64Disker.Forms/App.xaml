@@ -12,6 +12,7 @@
         <!--  Converters  -->
 
         <cvt:BooleanToFontAttributesConverter x:Key="BooleanToFontAttributesConverter" />
+        <cvt:BooleanToActiveStringConverter x:Key="BooleanToActiveStringConverter" />
 
         <!--  Styling for the application  -->
 

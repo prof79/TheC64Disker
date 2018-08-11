@@ -126,7 +126,7 @@
                         <ImageCell
                             ImageSource="/Assets/Floppy.ico"
                             Text="{Binding Name, Mode=OneWay}"
-                            Detail="Active or not active" />
+                            Detail="{Binding IsActive, Mode=OneWay, Converter={StaticResource BooleanToActiveStringConverter}}" />
 
                     </DataTemplate>
                     
