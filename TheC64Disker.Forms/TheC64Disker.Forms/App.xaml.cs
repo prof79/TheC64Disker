@@ -22,17 +22,20 @@ namespace at.markusegger.Application.TheC64Disker.Forms
 
         public App(IPlatformInitializer initializer) : base(initializer) { }
 
+        #pragma warning disable AsyncFixer01 // Unnecessary async/await usage
         protected override async void OnInitialized()
         {
             InitializeComponent();
 
             await NavigationService.NavigateAsync("NavigationPage/DiskSelectionView");
         }
+        #pragma warning restore AsyncFixer01 // Unnecessary async/await usage
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<DiskSelectionView>();
+            containerRegistry.RegisterForNavigation<AboutView>();
         }
     }
 }

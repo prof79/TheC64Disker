@@ -21,8 +21,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!--  Version and copyright lines  -->
@@ -119,6 +119,8 @@
 
         <!--  License  -->
 
+        <Label Grid.Row="3" Text="License:" />
+        
         <!-- TODO
             From WPF:
             (done) HorizontalScrollBarVisibility="Auto"
@@ -127,7 +129,7 @@
             ? TextWrapping="Wrap"
         -->
         <ScrollView
-            Grid.Row="3"
+            Grid.Row="4"
             HorizontalScrollBarVisibility="Default"
             VerticalScrollBarVisibility="Default">
 
@@ -137,20 +139,7 @@
             
         </ScrollView>
 
-        <!--  OK Button  -->
-
-        <!-- TODO
-            From WPF:
-            MinWidth="75"
-            MinHeight="25"
-            HorizontalAlignment="Right"
-            IsDefault="True"
-        -->
-        <Button
-            Grid.Row="4"
-            Command="{Binding OkCommand, Mode=OneWay}"
-            Text="OK"
-            />
+        <!--  OK Button removed -->
 
     </Grid>
 

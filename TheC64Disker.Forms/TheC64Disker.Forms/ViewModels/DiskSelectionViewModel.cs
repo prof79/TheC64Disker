@@ -23,6 +23,7 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
     using at.markusegger.Application.TheC64Disker.Interactivity.InteractionRequest;
     using Models;
     using Utility;
+    using System.Threading.Tasks;
 
     public class DiskSelectionViewModel : ViewModelBase
     {
@@ -317,17 +318,22 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
             return confirmation.Confirmed;
         }
 
-        private void OnAboutCommand()
+        #pragma warning disable AsyncFixer01 // Unnecessary async/await usage
+        private async void OnAboutCommand()
         {
-            AboutNotificationRequest.Raise(
-                new Notification
-                {
-                    Title = "About TheC64Disker"
-                    // Content will be filled by the interaction trigger
-                    // and content type
-                }
-            );
+            // TODO: Interaction replacement
+            //AboutNotificationRequest.Raise(
+            //    new Notification
+            //    {
+            //        Title = "About TheC64Disker"
+            //        // Content will be filled by the interaction trigger
+            //        // and content type
+            //    }
+            //);
+
+            await NavigationService.NavigateAsync("NavigationPage/AboutView");
         }
+        #pragma warning restore AsyncFixer01 // Unnecessary async/await usage
 
         private void OnDebugCommand()
         {
