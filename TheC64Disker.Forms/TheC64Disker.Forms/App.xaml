@@ -53,7 +53,7 @@
         <Style TargetType="Image">
             <Setter Property="Margin" Value="4" />
             <!-- WPF: <Setter Property="Stretch" Value="UniformToFill" />-->
-            <Setter Property="Aspect" Value="AspectFill" />
+            <Setter Property="Aspect" Value="AspectFit" />
         </Style>
 
         <!--<Style TargetType="StatusBar">

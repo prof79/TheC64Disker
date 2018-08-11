@@ -98,35 +98,56 @@
                     
                     <DataTemplate>
 
-                        <!-- Causing a crash in Xamarin.Forms.Core -->
-                        <!--<ViewCell>
+                        <ViewCell>
                             
-                            <Grid>
+                            <Grid HorizontalOptions="StartAndExpand">
 
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
 
+                                <!--
+                                    Using "Width" and "Height" would cause
+                                    a crash in Xamarin.Forms.Core.dll.
+                                -->
                                 <Image
                                     Grid.Column="0"
-                                    Width="16"
-                                    Height="16"
-                                    Source="/Assets/Floppy.ico" />
+                                    Source="/Assets/Floppy.ico"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="Center"
+                                    />
 
-                                <Label
-                                    Grid.Column="1"
-                                    FontAttributes="{Binding IsActive, Mode=OneWay, Converter={StaticResource BooleanToFontAttributesConverter}}"
-                                    Text="{Binding Name, Mode=OneWay}" />
+                                <Grid Grid.Column="1" HorizontalOptions="StartAndExpand">
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Caption -->
+                                    <Label
+                                        Grid.Row="0"
+                                        FontAttributes="{Binding IsActive, Mode=OneWay, Converter={StaticResource BooleanToFontAttributesConverter}}"
+                                        Text="{Binding Name, Mode=OneWay}"
+                                        LineBreakMode="WordWrap"/>
+
+                                    <!-- Details -->
+                                    <Label
+                                        Grid.Row="1"
+                                        Text="{Binding IsActive, Mode=OneWay, Converter={StaticResource BooleanToActiveStringConverter}}"
+                                        LineBreakMode="WordWrap" />
+                                    
+                                </Grid>
 
                             </Grid>
 
-                        </ViewCell>-->
+                        </ViewCell>
 
-                        <ImageCell
+                        <!--<ImageCell
                             ImageSource="/Assets/Floppy.ico"
                             Text="{Binding Name, Mode=OneWay}"
-                            Detail="{Binding IsActive, Mode=OneWay, Converter={StaticResource BooleanToActiveStringConverter}}" />
+                            Detail="{Binding IsActive, Mode=OneWay, Converter={StaticResource BooleanToActiveStringConverter}}" />-->
 
                     </DataTemplate>
                     
