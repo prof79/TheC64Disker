@@ -118,16 +118,10 @@
                                     VerticalOptions="Center"
                                     />
 
-                                <Grid Grid.Column="1" HorizontalOptions="StartAndExpand">
-
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
+                                <StackLayout Grid.Column="1" HorizontalOptions="StartAndExpand">
 
                                     <!-- Caption -->
                                     <Label
-                                        Grid.Row="0"
                                         FontSize="Micro"
                                         FontAttributes="{Binding IsActive, Mode=OneWay, Converter={StaticResource BooleanToFontAttributesConverter}}"
                                         Text="{Binding Name, Mode=OneWay}"
@@ -135,13 +129,13 @@
 
                                     <!-- Details -->
                                     <Label
-                                        Grid.Row="1"
                                         FontSize="Micro"
+                                        Margin="4,-8,4,4"
                                         Opacity="0.8"
                                         Text="{Binding IsActive, Mode=OneWay, Converter={StaticResource BooleanToActiveStringConverter}}"
                                         LineBreakMode="WordWrap" />
                                     
-                                </Grid>
+                                </StackLayout>
 
                             </Grid>
 
