@@ -262,3 +262,9 @@ __pycache__/
 
 # C64 Emulation Files (Images)
 *.d64
+*.d41
+*.d71
+*.d80
+*.d81
+*.d82
+*.t64
