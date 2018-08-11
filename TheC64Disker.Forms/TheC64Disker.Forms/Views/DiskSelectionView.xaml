@@ -106,7 +106,7 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-
+                               
                                 <!--
                                     Using "Width" and "Height" would cause
                                     a crash in Xamarin.Forms.Core.dll.
@@ -118,7 +118,10 @@
                                     VerticalOptions="Center"
                                     />
 
-                                <StackLayout Grid.Column="1" HorizontalOptions="StartAndExpand">
+                                <StackLayout
+                                    Grid.Column="1"
+                                    HorizontalOptions="StartAndExpand"
+                                    VerticalOptions="Center">
 
                                     <!-- Caption -->
                                     <Label
@@ -132,6 +135,7 @@
                                         FontSize="Micro"
                                         Margin="4,-8,4,4"
                                         Opacity="0.8"
+                                        IsVisible="{Binding IsActive, Mode=OneWay}"
                                         Text="{Binding IsActive, Mode=OneWay, Converter={StaticResource BooleanToActiveStringConverter}}"
                                         LineBreakMode="WordWrap" />
                                     
