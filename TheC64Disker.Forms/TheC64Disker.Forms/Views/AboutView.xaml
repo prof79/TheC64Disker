@@ -27,23 +27,25 @@
 
         <!--  Version and copyright lines  -->
 
-        <!--- TODO
+        <!---
             From WPF:
             (done) FontWeight="Bold"
-            TextTrimming="CharacterEllipsis"
+            (done) TextTrimming="CharacterEllipsis"
         -->
         <Label
             Grid.Row="0"
             FontAttributes="Bold"
+            LineBreakMode="TailTruncation"
             Text="{Binding ProductAndVersion, Mode=OneWay}"
-             />
+            />
 
-        <!--- TODO
+        <!---
             From WPF:
-            TextTrimming="CharacterEllipsis"
+            (done) TextTrimming="CharacterEllipsis"
         -->
         <Label
             Grid.Row="1"
+            LineBreakMode="TailTruncation"
             Text="{Binding Copyright, Mode=OneWay}"
             />
 
@@ -119,14 +121,21 @@
 
         <!-- TODO
             From WPF:
-            HorizontalScrollBarVisibility="Auto"
-            IsReadOnly="True"
-            TextWrapping="Wrap"
-            VerticalScrollBarVisibility="Auto"
+            (done) HorizontalScrollBarVisibility="Auto"
+            (done) VerticalScrollBarVisibility="Auto"
+            (done) IsReadOnly="True"
+            ? TextWrapping="Wrap"
         -->
-        <Entry
+        <ScrollView
             Grid.Row="3"
-            Text="{Binding License, Mode=OneWay}" />
+            HorizontalScrollBarVisibility="Default"
+            VerticalScrollBarVisibility="Default">
+
+            <Editor
+                IsEnabled="False"
+                Text="{Binding License, Mode=OneWay}" />
+            
+        </ScrollView>
 
         <!--  OK Button  -->
 

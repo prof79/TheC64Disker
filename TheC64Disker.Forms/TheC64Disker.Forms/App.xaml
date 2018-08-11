@@ -25,6 +25,12 @@
             <!--<Setter Property="Padding" Value="4,2" />-->
         </Style>
 
+        <Style TargetType="Editor">
+            <Setter Property="Margin" Value="4" />
+            <!-- TODO -->
+            <!--<Setter Property="Padding" Value="4,2" />-->
+        </Style>
+        
         <Style TargetType="Button">
             <Setter Property="Margin" Value="4" />
             <!-- TODO -->
@@ -45,8 +51,8 @@
 
         <Style TargetType="Image">
             <Setter Property="Margin" Value="4" />
-            <!-- TODO -->
-            <!--<Setter Property="Stretch" Value="UniformToFill" />-->
+            <!-- WPF: <Setter Property="Stretch" Value="UniformToFill" />-->
+            <Setter Property="Aspect" Value="AspectFill" />
         </Style>
 
         <!--<Style TargetType="StatusBar">

@@ -5,7 +5,6 @@ namespace at.markusegger.Application.TheC64Disker
     using System;
     using Prism;
     using Prism.Ioc;
-    using Xamarin.Forms;
     using Xamarin.Forms.Platform.WPF;
 
     /// <summary>
