@@ -128,6 +128,7 @@
                                     <!-- Caption -->
                                     <Label
                                         Grid.Row="0"
+                                        FontSize="Micro"
                                         FontAttributes="{Binding IsActive, Mode=OneWay, Converter={StaticResource BooleanToFontAttributesConverter}}"
                                         Text="{Binding Name, Mode=OneWay}"
                                         LineBreakMode="WordWrap"/>
@@ -135,6 +136,8 @@
                                     <!-- Details -->
                                     <Label
                                         Grid.Row="1"
+                                        FontSize="Micro"
+                                        Opacity="0.8"
                                         Text="{Binding IsActive, Mode=OneWay, Converter={StaticResource BooleanToActiveStringConverter}}"
                                         LineBreakMode="WordWrap" />
                                     
