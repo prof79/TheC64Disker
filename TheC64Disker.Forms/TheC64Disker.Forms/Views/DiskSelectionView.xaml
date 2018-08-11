@@ -13,6 +13,32 @@
     mc:Ignorable="d"
     Title="{Binding Title}">
 
+    <ContentPage.Resources>
+        
+        <StyleSheet>
+
+            <![CDATA[
+
+            #helpViewer label
+            {
+                font-family: "Verdana", "Arial", sans-serif;
+                font-size: 16;
+                font-style: bold;
+            }
+
+            #helpViewer button
+            {
+                color: blue;
+                background-color: transparent;
+                border-color: transparent;
+            }
+            
+            ]]>
+            
+        </StyleSheet>
+
+    </ContentPage.Resources>
+    
     <Grid>
 
         <Grid.RowDefinitions>
@@ -139,44 +165,45 @@
             <!--  Help Screen  -->
             <!-- TODO
                 From WPF:
-                Background="White"
+                (done) Background="White"
                 (done) Visibility="{Binding ShowHelp, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
             -->
             <Grid
                 Grid.RowSpan="5"
                 Grid.ColumnSpan="2"
-                Opacity="0.9"
+                BackgroundColor="White"
                 IsVisible="{Binding ShowHelp, Mode=OneWay}"
+                Opacity="0.8"
                 >
 
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-
                 <!-- "Page" - Paragraphs go vertically -->
-                <FlexLayout Direction="Column">
-
+                <FlexLayout
+                    StyleId="helpViewer"
+                    Direction="Column"
+                    AlignItems="Center"
+                    JustifyContent="Center">
+                    
                     <!-- "Paragraph" - content goes horizontally -->
-                    <FlexLayout Direction="Row">
+                    <StackLayout Orientation="Horizontal">
                         <Label Text="No C64 disk images could be found." />
-                    </FlexLayout>
+                    </StackLayout>
 
-                    <FlexLayout Direction="Row">
+                    <StackLayout Orientation="Horizontal">
                         <Label>
                             Please copy some .d64 files into the root or any sub-folder
                             of the USB stick.
                         </Label>
-                    </FlexLayout>
+                    </StackLayout>
 
-                    <FlexLayout Direction="Row">
+                    <StackLayout Orientation="Horizontal">
                         <Label Text="Click" />
                         <!-- TODO: Hyperlink -->
                         <Button Text="refresh" Command="{Binding RefreshCommand, Mode=OneWay}" />
                         <Label Text="when you are ready." />
-                    </FlexLayout>
+                    </StackLayout>
 
                 </FlexLayout>
-                
+
                 <!-- TODO
                     From WPF: Not supported in Forms?
                 -->
