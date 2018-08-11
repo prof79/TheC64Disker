@@ -178,28 +178,23 @@
 
                 <!-- "Page" - Paragraphs go vertically -->
                 <FlexLayout
+                    Margin="16"
                     StyleId="helpViewer"
                     Direction="Column"
                     AlignItems="Center"
                     JustifyContent="Center">
                     
-                    <!-- "Paragraph" - content goes horizontally -->
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="No C64 disk images could be found." />
-                    </StackLayout>
+                    <Label Text="No C64 disk images could be found." LineBreakMode="WordWrap" />
 
-                    <StackLayout Orientation="Horizontal">
-                        <Label>
-                            Please copy some .d64 files into the root or any sub-folder
-                            of the USB stick.
-                        </Label>
-                    </StackLayout>
+                    <Label LineBreakMode="WordWrap" HorizontalTextAlignment="Center">
+                        Please copy some .d64 files into the root or any sub-folder of the USB stick.
+                    </Label>
 
                     <StackLayout Orientation="Horizontal">
                         <Label Text="Click" />
                         <!-- TODO: Hyperlink -->
                         <Button Text="refresh" Command="{Binding RefreshCommand, Mode=OneWay}" />
-                        <Label Text="when you are ready." />
+                        <Label Text="when you are ready." LineBreakMode="WordWrap" />
                     </StackLayout>
 
                 </FlexLayout>
