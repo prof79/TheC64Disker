@@ -204,6 +204,8 @@
 
         </Grid>
 
+        <!-- StatusBar Replacement Attempt -->
+        
         <Grid
             Grid.Row="1"
             >
@@ -278,6 +280,7 @@
     </Grid>
 
     <!--  Interaction Triggers  -->
+    
     <!-- TODO: Not in Xamarin.Forms? -->
     <!--<i:Interaction.Triggers>
 
