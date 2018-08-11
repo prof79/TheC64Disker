@@ -7,7 +7,7 @@
 // <description>
 //      View-model (data, operations, commands) for the about view.
 // </description>
-// <version>v0.8.0 2018-06-15T02:27:00+02</version>
+// <version>v0.9.2x 2018-08-11T14:59:00+02</version>
 //----------------------------------------------------------------------------
 
 namespace at.markusegger.Application.TheC64Disker.ViewModels
@@ -32,7 +32,6 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
 
         private readonly IEventAggregator _eventAggregator;
 
-        private DelegateCommand _okCommand;
         private DelegateCommand<string> _hyperlinkCommand;
 
         #endregion
@@ -92,15 +91,6 @@ SOFTWARE.
 
         public string ProductAndCopyright
             => $"{ProductName} v{Version}, {Copyright}";
-
-        public DelegateCommand OkCommand
-            => _okCommand
-                ?? (_okCommand =
-                    new DelegateCommand(
-                        () =>
-                            _eventAggregator
-                                .GetEvent<Events.CloseEvent>()
-                                .Publish(nameof(AboutViewModel))));
 
         public DelegateCommand<string> HyperlinkCommand
             => _hyperlinkCommand
