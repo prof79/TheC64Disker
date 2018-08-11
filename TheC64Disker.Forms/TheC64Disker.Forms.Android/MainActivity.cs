@@ -1,11 +1,13 @@
-﻿using Android.App;
-using Android.Content.PM;
-using Android.OS;
-using Prism;
-using Prism.Ioc;
+﻿// MainActivity.cs
 
 namespace TheC64Disker.Forms.Droid
 {
+    using Android.App;
+    using Android.Content.PM;
+    using Android.OS;
+    using Prism;
+    using Prism.Ioc;
+
     [Activity(Label = "TheC64Disker.Forms", Icon = "@mipmap/ic_launcher", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
@@ -17,7 +19,7 @@ namespace TheC64Disker.Forms.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
-            LoadApplication(new App(new AndroidInitializer()));
+            LoadApplication(new at.markusegger.Application.TheC64Disker.Forms.App(new AndroidInitializer()));
         }
     }
 
@@ -29,4 +31,3 @@ namespace TheC64Disker.Forms.Droid
         }
     }
 }
-

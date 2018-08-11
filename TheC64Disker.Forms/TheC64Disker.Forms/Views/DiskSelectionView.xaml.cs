@@ -21,5 +21,12 @@ namespace at.markusegger.Application.TheC64Disker.Views
     {
         public DiskSelectionView()
             => InitializeComponent();
+
+        private void ContentPage_Appearing(object sender, System.EventArgs e)
+        {
+            //DisplayAlert("Test Alert", "Extra long test dljfdljfsljfl fjölafj lköf lökaj flkj ldjlsjfsd dsfflsdfksdfjlsdf slls slkkd", "OK");
+
+            PopUpView.ShowDialog();
+        }
     }
 }

@@ -11,7 +11,8 @@
     d:DesignHeight="450"
     d:DesignWidth="600"
     mc:Ignorable="d"
-    Title="{Binding Title}">
+    Title="{Binding Title}"
+    Appearing="ContentPage_Appearing">
 
     <ContentPage.Resources>
         
@@ -230,6 +231,15 @@
 
             </Grid>
 
+            <local:PopUpDialogView  x:Name="PopUpView"
+                                    HeaderTitle="Test Dialog"
+                                    Grid.ColumnSpan="2"
+                                    Grid.RowSpan="5">
+
+                <Label Text="Test Test Test" />
+
+            </local:PopUpDialogView>
+            
         </Grid>
 
         <!-- StatusBar Replacement Attempt -->

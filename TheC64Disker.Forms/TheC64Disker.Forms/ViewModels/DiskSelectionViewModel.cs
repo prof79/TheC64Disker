@@ -24,12 +24,15 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
     using Models;
     using Utility;
     using System.Threading.Tasks;
+    using Prism.Services;
+    using System.Threading;
 
     public class DiskSelectionViewModel : ViewModelBase
     {
         #region Fields
 
         private readonly IEventAggregator _eventAggregator;
+        private readonly IPageDialogService _pageDialogService;
 
         private DelegateCommand _activateCommand;
         private DelegateCommand _refreshCommand;
@@ -51,7 +54,8 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
 
         public DiskSelectionViewModel(
             INavigationService navigationService,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            IPageDialogService pageDialogService)
             : base(navigationService)
         {
             _eventAggregator = eventAggregator;
@@ -61,7 +65,11 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
                 .GetEvent<Events.DiskImageEnumerationError>()
                 .Subscribe(OnDiskImageError /*, ThreadOption.UIThread*/);
 
+            _pageDialogService = pageDialogService;
+
             Title = "Disk Selection";
+
+            InitInteractionRequestHandlers();
         }
 
         #endregion
@@ -182,9 +190,50 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
 
         #region Methods
 
+        private void InitInteractionRequestHandlers()
+        {
+            CustomNotificationRequest.Raised
+                += HandleInteractionRequest;
+
+            CustomConfirmationRequest.Raised
+                += HandleInteractionRequest;
+        }
+
         #endregion
 
         #region Event Handlers
+
+        private async void HandleInteractionRequest(object sender, InteractionRequestedEventArgs e)
+        {
+            if (e == null)
+            {
+                return;
+            }
+
+            if (e.Context is IConfirmation confirmation)
+            {
+                confirmation.Confirmed =
+                    await _pageDialogService
+                        .DisplayAlertAsync(
+                            confirmation.Title,
+                            confirmation.Content.ToString(),
+                            "Yes",
+                            "No");
+            }
+            else if (e.Context is INotification notification)
+            {
+                await _pageDialogService
+                    .DisplayAlertAsync(
+                        notification.Title,
+                        notification.Content.ToString(),
+                        "OK");
+            }
+            else
+            {
+                throw new InvalidOperationException(
+                    $"{nameof(e.Context)} is neither {nameof(INotification)} nor {nameof(IConfirmation)}.");
+            }
+        }
 
         private void OnDiskImageError(Exception ex)
         {
@@ -350,17 +399,6 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
                 Content = message
             };
 
-            CustomNotificationRequest.Raise(notification);
-
-            if (SelectedItem != null)
-            {
-                CustomNotificationRequest.Raise(new Notification
-                {
-                    Title = "Selection",
-                    Content = $"You selected: {SelectedItem.FullName}"
-                });
-            }
-
             // Test notifications
 
             var warning = new Warning
@@ -369,7 +407,7 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
                 Content = "You must select an item first."
             };
 
-            CustomNotificationRequest.Raise(warning);
+            //CustomNotificationRequest.Raise(warning);
 
             var confirmation = new Confirmation
             {
@@ -377,13 +415,33 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
                 Content = "Do you confirm?"
             };
 
-            CustomConfirmationRequest.Raise(confirmation);
+            //CustomConfirmationRequest.Raise(confirmation);
 
-            CustomNotificationRequest.Raise(new Error
+            var error = new Error
             {
                 Title = "Error",
                 Content = "Unhandled exception in test error."
-            });
+            };
+
+            //CustomNotificationRequest.Raise(error);
+
+            CustomNotificationRequest.Raise(notification,
+                (n1) =>
+                {
+                    if (SelectedItem != null)
+                    {
+                        CustomNotificationRequest.Raise(new Notification
+                        {
+                            Title = "Selection",
+                            Content = $"You selected: {SelectedItem.FullName}"
+                        },
+                        (n2) => CustomNotificationRequest.Raise(warning,
+                            (n3) => CustomConfirmationRequest.Raise(confirmation,
+                                (n4) => CustomNotificationRequest.Raise(error)))
+                        );
+                    }
+                }
+            );
 
             var provokeErrorOnRemoval = DiskImages?.Count();
         }
