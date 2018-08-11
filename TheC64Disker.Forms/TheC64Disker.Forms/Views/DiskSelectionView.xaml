@@ -97,8 +97,9 @@
                 <ListView.ItemTemplate>
                     
                     <DataTemplate>
-                        
-                        <ViewCell>
+
+                        <!-- Causing a crash in Xamarin.Forms.Core -->
+                        <!--<ViewCell>
                             
                             <Grid>
 
@@ -120,8 +121,13 @@
 
                             </Grid>
 
-                        </ViewCell>
-                        
+                        </ViewCell>-->
+
+                        <ImageCell
+                            ImageSource="/Assets/Floppy.ico"
+                            Text="{Binding Name, Mode=OneWay}"
+                            Detail="Active or not active" />
+
                     </DataTemplate>
                     
                 </ListView.ItemTemplate>
