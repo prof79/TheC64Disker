@@ -82,11 +82,13 @@
             </Label>-->
 
             <Button
+                x:Name="ReleasesButton"
                 Grid.Row="0"
                 Grid.Column="1"
                 StyleClass="Link"
                 Text="https://github.com/prof79/TheC64Disker/releases"
-                Command="{Binding HyperlinkCommand}"
+                Command="{Binding HyperlinkCommand, Mode=OneWay}"
+                CommandParameter="{Binding Source={x:Reference ReleasesButton}, Path=Text, Mode=OneWay}"
                 />
 
             <Label
@@ -108,11 +110,13 @@
             </Label>-->
 
             <Button
+                x:Name="TheC64DiskerButton"
                 Grid.Row="1"
                 Grid.Column="1"
                 StyleClass="Link"
                 Text="https://github.com/prof79/TheC64Disker"
-                Command="{Binding HyperlinkCommand}"
+                Command="{Binding HyperlinkCommand, Mode=OneWay}"
+                CommandParameter="{Binding Source={x:Reference TheC64DiskerButton}, Path=Text, Mode=OneWay}"
                 />
 
         </Grid>

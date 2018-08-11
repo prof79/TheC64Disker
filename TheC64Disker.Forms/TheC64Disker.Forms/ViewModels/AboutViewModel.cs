@@ -17,6 +17,7 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
     using Prism.Commands;
     using Prism.Events;
     using Prism.Navigation;
+    using Xamarin.Forms;
     using global::TheC64Disker.Forms.ViewModels;
 
     /// <summary>
@@ -32,6 +33,7 @@ namespace at.markusegger.Application.TheC64Disker.ViewModels
         private readonly IEventAggregator _eventAggregator;
 
         private DelegateCommand _okCommand;
+        private DelegateCommand<string> _hyperlinkCommand;
 
         #endregion
 
@@ -99,6 +101,13 @@ SOFTWARE.
                             _eventAggregator
                                 .GetEvent<Events.CloseEvent>()
                                 .Publish(nameof(AboutViewModel))));
+
+        public DelegateCommand<string> HyperlinkCommand
+            => _hyperlinkCommand
+                ?? (_hyperlinkCommand =
+                    new DelegateCommand<string>(
+                        (uri) =>
+                            Device.OpenUri(new Uri(uri))));
 
         #endregion
 
