@@ -52,6 +52,10 @@ For operating system support and pre-installed version guidance see [.NET Framew
 
 ## History
 
+### v0.9.1
+
+* Added `CBM 8250` (`.d82`) disk image support by request.
+
 ### v0.9.0
 
 This should be stable for production.
